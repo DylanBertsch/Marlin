@@ -281,8 +281,9 @@ void GcodeSuite::process_parsed_command(const bool no_ok/*=false*/) {
           break;
       #endif // HAS_LEVELING
 
-      #if HAS_BED_PROBE
+      #if HAS_BED_PROBE      
         case 30: G30(); break;                                    // G30: Single Z probe
+        case 2001: G2001(); break;                                // G2001: Single Z probe with TOF probe
         #if ENABLED(Z_PROBE_SLED)
           case 31: G31(); break;                                  // G31: dock the sled
           case 32: G32(); break;                                  // G32: undock the sled

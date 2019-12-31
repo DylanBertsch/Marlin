@@ -431,6 +431,8 @@ private:
 
   #if HAS_BED_PROBE
     static void G30();
+    static void G2001();//TOF probe command, forked of G30 
+    
     #if ENABLED(Z_PROBE_SLED)
       static void G31();
       static void G32();
@@ -769,6 +771,7 @@ private:
   static void M400();
 
   #if HAS_BED_PROBE
+    
     static void M401();
     static void M402();
   #endif
