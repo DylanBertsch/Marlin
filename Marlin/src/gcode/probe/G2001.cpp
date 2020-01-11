@@ -324,21 +324,28 @@ void Adafruit_VL6180X::write16(uint16_t address, uint16_t data)
 }
 
 Adafruit_VL6180X vl = Adafruit_VL6180X();
+int firstRun = 0;
 void GcodeSuite::G2001() {
-     if (! vl.begin()) {
-    MYSERIAL0.println("Failed to find sensor");
-    while (1);
+  if(firstRun == 0)
+  {
+    vl.begin();
+    firstRun = 1;
   }
-  MYSERIAL0.println("Sensor found!");
+  //MYSERIAL0.println("Sensor found!");
   uint8_t range = 0;
   uint8_t status = 0;
-  while(1)
-  {
-      status = vl.readRangeStatus();      
-      if(status == VL6180X_ERROR_NONE){
-          range = vl.readRange();
-      MYSERIAL0.println(range,DEC);
-      }
+  status = vl.readRangeStatus();      
+  if(status == VL6180X_ERROR_NONE){
+      //Average 10 Measurements
+      int measureSum = 0;
+      for(int i = 0; i < 5; i++)
+      {
+        measureSum = measureSum + vl.readRange();
+      }      
+  MYSERIAL0.print("TOF:");      
+  float outputResult = (float)measureSum/5.0f;
+  outputResult = outputResult + 0.00001f;
+  MYSERIAL0.println(outputResult,DEC);
   }
 }
 
